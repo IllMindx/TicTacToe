@@ -1,5 +1,7 @@
 import random, copy
 
+from .rect import Rect
+
 
 def isWinner(grid, draw):
     return ((grid[6].draw == draw and grid[7].draw == draw and grid[8].draw == draw) or 
@@ -30,12 +32,16 @@ def computerMove(grid):
 
     for draw in ['O', 'X']:
         for i in possibleMoves:
-            gridCopy = copy.deepcopy(grid)
+            gridCopy = []
+
+            for rect in grid:
+                aux = Rect(rect.x, rect.y, rect.x, rect.y)
+                aux.draw = rect.draw
+                gridCopy.append(aux)
 
             gridCopy[i].draw = draw
 
             if isWinner(gridCopy, draw):
-                for r in grid: print(r.draw)
                 move = i
                 return move
     

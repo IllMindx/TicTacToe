@@ -9,6 +9,7 @@ class View(object):
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((310, 310))
+        self.font = pygame.font.SysFont('comicsans', 30, True)
         pygame.display.set_caption('Tic Tac Toe')
         blockSize = 100
         self.grid = [
@@ -36,7 +37,7 @@ class View(object):
         while run:
             for event in pygame.event.get():
 
-                self.redrawScreen()
+                pygame.display.update()
 
                 if event.type == pygame.QUIT:
                     run = False
@@ -51,7 +52,7 @@ class View(object):
                                     self.drawX(rect)
                                     pygame.display.update()
                     else:
-                        print('You lose')
+                        self.endGame('You lose', (255,0,255))
                         run = False
                 else:
                     if not(isWinner(self.grid, 'X')):
@@ -59,16 +60,14 @@ class View(object):
                         self.drawO(self.grid[move])
                         pygame.display.update()
                     else:
-                        print('You won')
+                        self.endGame('You won', (0,255,0))
                         run = False
 
                 if isGridFull(self.grid):
+                    self.endGame('Tie game', (0,0,0))
                     run = False
 
         pygame.quit()
-
-    def redrawScreen(self):
-        pygame.display.update()
 
     def drawX(self, rect):
         if rect.draw != '':
@@ -100,3 +99,14 @@ class View(object):
         )
         rect.draw = 'O'
         self.playerTurn = True
+
+    def endGame(self, text, color):
+        text = self.font.render(text, 1, color)
+        self.screen.blit(text, (110, 150))
+        pygame.display.update()
+
+        paused = True
+        while paused:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    paused = False

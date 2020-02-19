@@ -8,6 +8,3 @@ class Rect(pygame.Rect):
         self.x = x
         self.y = y
         self.draw = ''
-    
-    def setDraw(self, draw):
-        self.draw = draw
